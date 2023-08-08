@@ -15,9 +15,12 @@ router.post('/', async (req, res) => {
     if (!req.body.state) {
         req.body.state = 'USA'
     }
+    if(req.currentUser?.role !== 'admin'){
+        return res.status(403).json({ message: 'You are not allowed to add a place'})
+
     const place = await Place.create(req.body)
     res.json(place)
-})
+}
 
 
 router.get('/', async (req, res) => {
@@ -43,7 +46,15 @@ router.get('/:placeId', async (req, res) => {
         } else {
             res.json(place)
         }
+          if(req.currentUser?.role !== 'admin'){
+        return res.status(403).json({ message: 'You are not allowed to edit places'})
     }
+
+    }
+    if(req.currentUser?.role !== 'admin'){
+        return res.status(403).json({ message: 'You are not allowed to edit places'})
+    }
+
 })
 
 router.put('/:placeId', async (req, res) => {

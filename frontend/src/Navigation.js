@@ -30,29 +30,65 @@ function Navigation() {
             </li>
         )
     }
-
+    
+    let addPlaceButton = null
+    
+    if (currentUser?.role === 'admin') {
+        addPlaceButton = (
+            <li>
+                <a href="#" onClick={() => history.push("/places/new")}>
+                    Add Place
+                </a>
+            </li>
+        )
+    }
     return (
         <nav>
-            <ul>
-                <li>
-                    <a href="#" onClick={() => history.push("/")}>
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <a href="#" onClick={() => history.push("/places")}>
-                        Places
-                    </a>
-                </li>
-                <li>
-                    <a href="#" onClick={() => history.push("/places/new")}>
-                        Add Place
-                    </a>
-                </li>
+              <ul>
+                {addPlaceButton}
                 {loginActions}
             </ul>
         </nav>
+    
+    )
+    comments = place.comments.map(comment => {
+        return (
+            <CommentCard 
+                key={comment.commentId} 
+                comment={comment} 
+                onDelete={() => deleteComment(comment)} 
+            />
+        )
+    })
+}
+
+let placeActions = null
+
+if (currentUser?.role === 'admin') {
+    placeActions = (
+        <>
+            <a className="btn btn-warning" onClick={editPlace}>
+                Edit
+            </a>
+            <button type="submit" className="btn btn-danger" onClick={deletePlace}>
+                Delete
+            </button>
+        </>
     )
 }
+
+return (
+    <main>
+        <div className="row">
+              <h4>
+                    Serving {place.cuisines}.
+                </h4>
+                <br />
+                {placeActions}
+            </div>
+</main>
+)
+
+
 
 export default Navigation;
